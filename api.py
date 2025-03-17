@@ -6,7 +6,7 @@ from responses.rag_res import RagResponse
 
 from dto.llm_dto import LlmChatDto
 
-API_URL = "http://209.38.157.244:8000"
+API_URL = "http://143.244.181.211:8000"
 
 api = {
     'rag': {
