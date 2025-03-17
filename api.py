@@ -25,13 +25,13 @@ def rag_api(dto: RagDto) -> list[RagResponse]:
     
 def llm_chat(dto: LlmChatDto):
     with requests.post(f"{API_URL}/llm/chat", json=dto, stream=True) as stream:
-        if stream.status_code != 200:
-            raise Exception(f"Failed to fetch response, status: {stream.status_code}")
-
-        for chunk in stream.iter_lines():
+        for chunk in stream.iter_lines():    
             if chunk:
                 try:
                     chunk_decoded = chunk.decode("utf-8").strip()
+
+                    if chunk_decoded.startswith("[DONE]"):
+                        break
                     
                     # Ensure only valid JSON chunks are processed
                     if chunk_decoded.startswith("data: "):

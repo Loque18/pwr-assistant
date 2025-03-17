@@ -5,21 +5,32 @@ from responses.rag_res import RagResponse
 
 import enum
 
+import streamlit as st
+
+st.markdown(
+    r"""
+    <style>
+    .stDeployButton {
+            visibility: hidden;
+        }
+    </style>
+    """, unsafe_allow_html=True
+)
+
 class ModelEnum(enum.Enum):
     DEEPSEEK_CHAT = "deepseek-chat"
     DEEPSEEK_R1 = "deepseek-reasoner"
 
 # 3rd party imports
-import streamlit as st
 
-API_URL = "http://209.38.157.244:8000"
+API_URL = "http://143.244.181.211:8000"
 
 # set app title
 st.title("PWR Assistant")
 
 # dropdown
 col1, col2 = st.columns([4, 6])
-rag_model = col1.selectbox("Select a model", [ModelEnum.DEEPSEEK_CHAT.value, ModelEnum.DEEPSEEK_R1.value], )
+rag_model = col1.selectbox("Select a model", [ModelEnum.DEEPSEEK_R1.value, ModelEnum.DEEPSEEK_CHAT.value])
 
 # chat history
 if "conversation" not in st.session_state:
@@ -59,7 +70,7 @@ def on_user_prompt(prompt: str):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("processing..."):
+        with st.spinner("Thinking..."):
             try:
                 documents = rag_api({"prompt": prompt, "top_k": 3})
 
@@ -67,11 +78,13 @@ def on_user_prompt(prompt: str):
 
                 full_prompt = f"""you are an expert in blockchain develpment\n\n only answer questions related to blockchain or the context provided, answer the user question using the following context:\n\n{ctx}\n\n user question: {prompt}"""
 
-                body = {"prompt": full_prompt, "model": 'deepseek-chat'}
+                body = {"prompt": full_prompt, "model": rag_model}
                 stream = llm_chat(body)
+                print(stream)
                 response = st.write_stream(stream)
 
             except Exception as e:
+                print('error')
                 response = f"There was an error processing your request: {e}"
             finally:
                 st.session_state.is_streaming = False
