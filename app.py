@@ -28,9 +28,6 @@ API_URL = "http://143.244.181.211:8000"
 # set app title
 st.title("PWR Assistant")
 
-# dropdown
-col1, col2 = st.columns([4, 6])
-rag_model = col1.selectbox("Select a model", [ModelEnum.DEEPSEEK_R1.value, ModelEnum.DEEPSEEK_CHAT.value])
 
 # chat history
 if "conversation" not in st.session_state:
@@ -78,9 +75,8 @@ def on_user_prompt(prompt: str):
 
                 full_prompt = f"""you are an expert in blockchain develpment\n\n only answer questions related to blockchain or the context provided, answer the user question using the following context:\n\n{ctx}\n\n user question: {prompt}"""
 
-                body = {"prompt": full_prompt, "model": rag_model}
+                body = {"prompt": full_prompt, "model": "deepseek-reasoner"}
                 stream = llm_chat(body)
-                print(stream)
                 response = st.write_stream(stream)
 
             except Exception as e:
