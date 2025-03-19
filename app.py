@@ -23,7 +23,7 @@ class ModelEnum(enum.Enum):
 
 # 3rd party imports
 
-API_URL = "http://143.244.181.211:8000"
+API_URL = "https://pwragent-api.pwrlabs.io"
 
 # set app title
 st.title("PWR Assistant")
