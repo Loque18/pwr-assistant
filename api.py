@@ -5,8 +5,8 @@ from dto.rag_dto import RagDto
 from responses.rag_res import RagResponse
 
 from dto.llm_dto import LlmChatDto
+from constants import API_URL
 
-API_URL = "http://143.244.181.211:8000"
 
 api = {
     'rag': {
@@ -24,7 +24,7 @@ def rag_api(dto: RagDto) -> list[RagResponse]:
         raise Exception(f"Failed to fetch context, status: {response.status_code}")
     
 def llm_chat(dto: LlmChatDto):
-    with requests.post(f"{API_URL}/llm/chat", json=dto, stream=True) as stream:
+    with requests.post(f"{API_URL}/llm/chatv2", json=dto, stream=True) as stream:
         for chunk in stream.iter_lines():    
             if chunk:
                 try:
