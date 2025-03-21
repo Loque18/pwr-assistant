@@ -6,12 +6,12 @@ from responses.rag_res import RagResponse
 import enum
 
 import streamlit as st
-from pages.instructions import instructions_page as instructions_page 
-from pages.main import main_page as chat_page
+from pages.instructions_page import instructions
+from pages.main import main_page 
 
 pages = {
-    "Chat": [chat_page],
-    "Instructions": [instructions_page]
+    "Chat": [st.Page(main_page, default=True, icon="🤖", title="PWR Assistant")],
+    "Instructions": [st.Page(instructions, url_path="instructions", icon="📄", title="Instructions")]
 }
 
 pg = st.navigation(pages, position="hidden")

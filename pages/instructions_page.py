@@ -3,7 +3,7 @@ import requests
 from api import get_instructions, upload_instrunctions
 import bcrypt
 
-def instructions_page():
+def instructions():
 
     password = st.secrets["password"]
 

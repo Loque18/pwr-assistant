@@ -10,10 +10,6 @@ class ModelEnum(enum.Enum):
     DEEPSEEK_R1 = "deepseek-reasoner"
 
 def main_page():
-    st.set_page_config(
-        page_title="PWR Assistant",
-        page_icon="🧊",
-    )
 
     # set app title
     st.title("PWR Assistant")
