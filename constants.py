@@ -1,1 +1,1 @@
-API_URL="https://pwragent-api.pwrlabs.io"
+API_URL="http://143.244.181.211:8000"

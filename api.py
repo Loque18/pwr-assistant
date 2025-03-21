@@ -24,7 +24,7 @@ def rag_api(dto: RagDto) -> list[RagResponse]:
         raise Exception(f"Failed to fetch context, status: {response.status_code}")
     
 def llm_chat(dto: LlmChatDto):
-    with requests.post(f"{API_URL}/llm/chatv2", json=dto, stream=True) as stream:
+    with requests.post(f"{API_URL}/llm/chat", json=dto, stream=True) as stream:
         for chunk in stream.iter_lines():    
             if chunk:
                 try:
@@ -46,3 +46,20 @@ def llm_chat(dto: LlmChatDto):
                 except json.JSONDecodeError as e:
                     print(f"JSON Decode Error: {e}, Raw Chunk: {chunk_decoded}")  # Debugging info
     
+
+def get_instructions():
+    try:
+        res = requests.get(f"{API_URL}/files/instructions.md")
+        res.raise_for_status()
+        return res
+    except Exception as e:
+        return f"Failed to load instructions: {e}"
+    
+def upload_instrunctions(file):
+    try:
+        files = [('files', ('instructions.md', file.getvalue(), 'text/markdown'))]
+        res = requests.post(f"{API_URL}/files", files=files)
+        res.raise_for_status()
+        return True, "File uploaded successfully!"
+    except Exception as e:
+        return False, f"Upload failed: {e}"
